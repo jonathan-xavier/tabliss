@@ -17,6 +17,7 @@ const WorkHours: React.FC<Props> = ({ data = defaultData }) => {
       {isWorkDay(data.days) && (
         <>
           <h2>{hoursProgress(time, start, end)}%</h2>
+          <h2>{reverseProgress(time, start, end)}%</h2>
         </>
       )}
     </div>
@@ -32,6 +33,17 @@ const hoursProgress = (current: Date, start: Date, end: Date): number => {
 
   return Math.floor((progress / total) * 100);
 };
+
+const reverseProgress = (current: Date, start: Date, end:Date) => {
+  if(current < start) return 100;
+  if(current > end) return 0;
+  const fullPercent = 100;
+  const total = end.getTime() - start.getTime();
+  const progress = current.getTime() - start.getTime();
+
+  return (fullPercent - Math.floor((progress / total) * 100));
+
+}
 
 const buildDateTime = (time: string): Date => {
   const [hours, minutes] = time.split(":");
